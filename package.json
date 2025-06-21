@@ -2,7 +2,7 @@
   "name": "techblogposts",
   "version": "0.1.0",
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=22.0.0"
   },
   "private": true,
   "scripts": {
@@ -31,7 +31,7 @@
     "@vanilla-extract/recipes": "^0.5.1",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
-    "firebase": "^10.7.1",
+    "firebase": "^11.9.1",
     "html-entities": "^2.4.0",
     "lottie-web": "^5.12.2",
     "next": "14.1.0",
