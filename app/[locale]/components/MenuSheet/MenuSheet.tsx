@@ -97,19 +97,19 @@ export async function MenuSheet() {
             </Link>
           </Sheet.Close>
           <div className={styles.footerIcons}>
-            <ExternalLink href="https://github.com/jthcast/techblogposts">
+            <ExternalLink href="https://github.com/na86421/techblogposts">
               <Github className={styles.footerIcon} />
             </ExternalLink>
-            <ExternalLink href="https://linkedin.com/in/jthcast">
+            <ExternalLink href="https://www.linkedin.com/in/junki-yoon-a461041bb/">
               <LinkedIn className={styles.footerIcon} />
             </ExternalLink>
             <ExternalLink href="/rss.xml">
               <Rss className={styles.footerIcon} />
             </ExternalLink>
           </div>
-          <Link href="mailto:jthcast@gmail.com" isUnderline>
+          <Link href="mailto:na86421@naver.com.com" isUnderline>
             <span className={styles.copyright}>
-              © {new Date().getFullYear()} JthCast
+              © {new Date().getFullYear()} Junki Yoon
             </span>
           </Link>
         </Sheet.Footer>

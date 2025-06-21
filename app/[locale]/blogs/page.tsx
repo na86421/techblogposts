@@ -59,7 +59,7 @@ export default function BlogsPage() {
         <Link
           isButton
           color="accentPrimary"
-          href="mailto:jthcast@gmail.com"
+          href="mailto:na86421@naver.com"
           aria-label="mail"
         >
           {t('BlogsPage.contactButton')}
