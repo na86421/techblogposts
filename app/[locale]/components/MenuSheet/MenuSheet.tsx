@@ -2,24 +2,24 @@ import * as Sheet from '@/components/atom/Sheet/Sheet'
 import { Button } from '@/components/atom/Button/Button'
 import {
   Bars,
-  CogWithCardColored,
+  // CogWithCardColored,
   Github,
   LinkedIn,
   PaperWithLinesColored,
   PaperWithSignalColored,
   Rss,
-  StarInTheBookColored,
+  // StarInTheBookColored,
 } from '@/components/atom/Icon'
 import { routes } from '@/constants/routes'
 import * as styles from '@/app/[locale]/components/MenuSheet/menuSheet.css'
 import { Link } from '@/components/atom/Link/Link'
 import { ExternalLink } from '@/components/atom/ExternalLink/ExternalLink'
-import { auth } from '@/auth'
+// import { auth } from '@/auth'
 import { getTranslations } from 'next-intl/server'
 
 export async function MenuSheet() {
   const t = await getTranslations()
-  const data = await auth()
+  // const data = await auth()
 
   return (
     <Sheet.Root>
@@ -54,7 +54,8 @@ export async function MenuSheet() {
                 </Link>
               </Sheet.Close>
             </li>
-            {data?.user && (
+            {/* 인증 관련 메뉴 항목 주석 처리 */}
+            {/* {data?.user && (
               <>
                 <li>
                   <Sheet.Close asChild>
@@ -77,7 +78,7 @@ export async function MenuSheet() {
                   </Sheet.Close>
                 </li>
               </>
-            )}
+            )} */}
           </ul>
         </nav>
         <Sheet.Footer>

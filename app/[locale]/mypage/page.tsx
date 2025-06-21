@@ -1,3 +1,7 @@
+import { notFound } from 'next/navigation'
+
+// 마이페이지 기능 주석 처리
+/*
 import * as styles from '@/app/[locale]/mypage/page.css'
 import { format, formatISO } from 'date-fns'
 import { auth } from '@/auth'
@@ -45,4 +49,9 @@ export default async function MypagePage() {
       </section>
     </main>
   )
+}
+*/
+
+export default function MypagePage() {
+  notFound()
 }

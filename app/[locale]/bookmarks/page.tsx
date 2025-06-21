@@ -1,3 +1,7 @@
+import { notFound } from 'next/navigation'
+
+// 북마크 페이지 기능 주석 처리
+/*
 'use client'
 
 import { queryKeys } from '@/providers/ReactQueryClientProvider/ReactQueryClientProvider'
@@ -101,4 +105,9 @@ export default function BookmarksPage() {
       </section>
     </main>
   )
+}
+*/
+
+export default function BookmarksPage() {
+  notFound()
 }

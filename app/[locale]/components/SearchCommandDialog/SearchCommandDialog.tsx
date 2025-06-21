@@ -15,8 +15,8 @@ import {
   postPostsViewCount,
 } from '@/app/api/v1/posts/posts'
 import { useDebounce } from '@/hooks/useDebounce/useDebounce'
-import { getBookmarks } from '@/app/api/v1/bookmarks/bookmarks'
-import { getAuth } from '@/app/api/v1/auth/auth'
+// import { getBookmarks } from '@/app/api/v1/bookmarks/bookmarks'
+// import { getAuth } from '@/app/api/v1/auth/auth'
 
 export function SearchCommandDialog() {
   const t = useTranslations()
@@ -24,10 +24,11 @@ export function SearchCommandDialog() {
   const [value, setValue] = useState('')
   const { value: query } = useDebounce({ value })
 
-  const { data: auth } = useQuery({
-    queryKey: queryKeys.getAuth,
-    queryFn: getAuth,
-  })
+  // 회원 기능 주석 처리
+  // const { data: auth } = useQuery({
+  //   queryKey: queryKeys.getAuth,
+  //   queryFn: getAuth,
+  // })
 
   const { data: recentPosts } = useQuery({
     queryKey: queryKeys.getPosts({ cursor: '' }),
@@ -41,11 +42,12 @@ export function SearchCommandDialog() {
     enabled: !!query,
   })
 
-  const { data: bookmarksData } = useQuery({
-    queryKey: queryKeys.getBookmarks({ uid: auth?.user?.uid! }),
-    queryFn: () => getBookmarks({ uid: auth?.user?.uid! }),
-    enabled: !!auth?.user?.uid,
-  })
+  // 북마크 기능 주석 처리
+  // const { data: bookmarksData } = useQuery({
+  //   queryKey: queryKeys.getBookmarks({ uid: auth?.user?.uid! }),
+  //   queryFn: () => getBookmarks({ uid: auth?.user?.uid! }),
+  //   enabled: !!auth?.user?.uid,
+  // })
 
   const { mutate: postsViewCount } = useMutation({
     mutationFn: postPostsViewCount,
@@ -97,13 +99,15 @@ export function SearchCommandDialog() {
                   {results?.posts.map(({ _source }) => {
                     const { company, id, publishDate, title, viewCount } =
                       _source
-                    const isBookmarked = bookmarksData?.bookmarks.some(
+
+                    /* 북마크 관련 로직 주석 처리 */
+                    /* const isBookmarked = bookmarksData?.bookmarks.some(
                       ({ _source }) => {
                         const { parent } = _source
 
                         return parent === id
                       },
-                    )
+                    ) */
 
                     return (
                       <Command.Item key={id} onSelect={() => openPost({ id })}>
@@ -119,13 +123,14 @@ export function SearchCommandDialog() {
                             <Post.RightContent>
                               <Post.Time time={publishDate} />
                               <Post.ViewCount>{viewCount}</Post.ViewCount>
-                              {auth?.user?.uid && (
+                              {/* 북마크 버튼 주석 처리 */}
+                              {/* {auth?.user?.uid && (
                                 <Post.Bookmark
                                   isBookmarked={isBookmarked}
                                   uid={auth.user.uid}
                                   parent={id}
                                 />
-                              )}
+                              )} */}
                             </Post.RightContent>
                           </Post.Content>
                         </Post.Item>
@@ -145,13 +150,15 @@ export function SearchCommandDialog() {
                     {recentPosts?.posts.map(({ _source }) => {
                       const { company, id, publishDate, title, viewCount } =
                         _source
-                      const isBookmarked = bookmarksData?.bookmarks.some(
-                        ({ _source }) => {
-                          const { parent } = _source
 
-                          return parent === id
-                        },
-                      )
+                      /* 북마크 관련 로직 주석 처리 */
+                      /* const isBookmarked = bookmarksData?.bookmarks.some(
+                          ({ _source }) => {
+                            const { parent } = _source
+
+                            return parent === id
+                          },
+                        ) */
 
                       return (
                         <Command.Item
@@ -170,13 +177,14 @@ export function SearchCommandDialog() {
                               <Post.RightContent>
                                 <Post.Time time={publishDate} />
                                 <Post.ViewCount>{viewCount}</Post.ViewCount>
-                                {auth?.user?.uid && (
+                                {/* 북마크 버튼 주석 처리 */}
+                                {/* {auth?.user?.uid && (
                                   <Post.Bookmark
                                     isBookmarked={isBookmarked}
                                     uid={auth.user.uid}
                                     parent={id}
                                   />
-                                )}
+                                )} */}
                               </Post.RightContent>
                             </Post.Content>
                           </Post.Item>
