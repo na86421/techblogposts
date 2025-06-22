@@ -3,25 +3,28 @@
 import { getPosts } from '@/app/api/v1/posts/posts'
 import { Observer } from '@/components/atom/Observer/Observer'
 import { queryKeys } from '@/providers/ReactQueryClientProvider/ReactQueryClientProvider'
-import { useQuery, useSuspenseInfiniteQuery } from '@tanstack/react-query'
+// import { useQuery, useSuspenseInfiniteQuery } from '@tanstack/react-query'
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query'
 import * as Post from '@/components/atom/Post/Post'
 import * as Separator from '@/components/atom/Separator/Separator'
 import { Fragment } from 'react'
-import { getBookmarks } from '@/app/api/v1/bookmarks/bookmarks'
-import { getAuth } from '@/app/api/v1/auth/auth'
+// import { getBookmarks } from '@/app/api/v1/bookmarks/bookmarks'
+// import { getAuth } from '@/app/api/v1/auth/auth'
 import PostsLoading from '@/app/components/Posts/PostsLoading'
 
 export default function Posts() {
-  const { data } = useQuery({
-    queryKey: queryKeys.getAuth,
-    queryFn: getAuth,
-  })
+  // 인증 관련 코드 주석 처리
+  // const { data } = useQuery({
+  //   queryKey: queryKeys.getAuth,
+  //   queryFn: getAuth,
+  // })
 
-  const { data: bookmarksData } = useQuery({
-    queryKey: queryKeys.getBookmarks({ uid: data?.user?.uid! }),
-    queryFn: () => getBookmarks({ uid: data?.user?.uid! }),
-    enabled: !!data?.user?.uid,
-  })
+  // 북마크 관련 코드 주석 처리
+  // const { data: bookmarksData } = useQuery({
+  //   queryKey: queryKeys.getBookmarks({ uid: data?.user?.uid! }),
+  //   queryFn: () => getBookmarks({ uid: data?.user?.uid! }),
+  //   enabled: !!data?.user?.uid,
+  // })
 
   const {
     data: postsData,
@@ -49,13 +52,15 @@ export default function Posts() {
               const isLastItem =
                 pageIndex + 1 === postsData?.pages.length &&
                 postIndex + 1 === posts.length
-              const isBookmarked = bookmarksData?.bookmarks.some(
-                ({ _source }) => {
-                  const { parent } = _source
 
-                  return parent === id
-                },
-              )
+              // 북마크 관련 로직 주석 처리
+              // const isBookmarked = bookmarksData?.bookmarks.some(
+              //   ({ _source }) => {
+              //     const { parent } = _source
+
+              //     return parent === id
+              //   },
+              // )
 
               return (
                 <Fragment key={id}>
@@ -71,13 +76,14 @@ export default function Posts() {
                       <Post.RightContent>
                         <Post.Time time={publishDate} />
                         <Post.ViewCount>{viewCount}</Post.ViewCount>
-                        {data?.user?.uid && (
+                        {/* 북마크 버튼 주석 처리 */}
+                        {/* {data?.user?.uid && (
                           <Post.Bookmark
                             isBookmarked={isBookmarked}
                             uid={data.user.uid}
                             parent={id}
                           />
-                        )}
+                        )} */}
                       </Post.RightContent>
                     </Post.Content>
                   </Post.Item>
