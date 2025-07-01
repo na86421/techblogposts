@@ -4,10 +4,33 @@ import * as Dialog from '@/components/atom/Dialog/Dialog'
 import * as styles from '@/app/[locale]/page.css'
 import Posts from '@/app/components/Posts/Posts'
 import PostsLoading from '@/app/components/Posts/PostsLoading'
-import { Suspense, useState } from 'react'
+import { Suspense, useState, useEffect } from 'react'
+
+const DONT_SHOW_KEY = 'dontShowModalUntil'
 
 export default function LocalePage() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
+  const [dontShow, setDontShow] = useState(false)
+
+  // 모달 오픈 여부 결정
+  useEffect(() => {
+    const until = localStorage.getItem(DONT_SHOW_KEY)
+
+    if (!until || new Date().getTime() > Number(until)) {
+      setOpen(true)
+    }
+  }, [])
+
+  // 닫기 시 7일간 저장
+  const handleClose = () => {
+    if (dontShow) {
+      const sevenDaysLater = new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+
+      localStorage.setItem(DONT_SHOW_KEY, String(sevenDaysLater))
+    }
+
+    setOpen(false)
+  }
 
   return (
     <>
@@ -74,10 +97,22 @@ export default function LocalePage() {
                 <b>감사합니다.</b>
               </p>
             </div>
+            <label
+              style={{ display: 'flex', alignItems: 'center', marginTop: 16 }}
+            >
+              <input
+                type="checkbox"
+                checked={dontShow}
+                onChange={(e) => setDontShow(e.target.checked)}
+                style={{ marginRight: 8 }}
+              />
+              7일간 다시 보지 않기
+            </label>
           </Dialog.Body>
           <Dialog.Footer>
             <Dialog.Close asChild>
               <button
+                onClick={handleClose}
                 style={{
                   padding: '0.6rem 2rem',
                   background: '#222',
