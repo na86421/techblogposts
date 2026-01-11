@@ -139,5 +139,5 @@ export const companyIcons = {
   카카오모빌리티: `kakaomobility.ico`,
   엔카닷컴AI: `encar.png`,
   바비톡: `babitalk.ico`,
-  하이퍼엑셀: `hyperaccel.ico`,
+  하이퍼엑셀: `hyperaccel.png`,
 } as const
