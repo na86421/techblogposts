@@ -137,6 +137,6 @@ export const companyIcons = {
   티맵모빌리티: `tmapmobility.ico`,
   토니모리: `tonymoly.png`,
   카카오모빌리티: `kakaomobility.ico`,
-  엔카: `encar.png`,
+  엔카닷컴AI: `encar.png`,
   바비톡: `babitalk.ico`,
 } as const
