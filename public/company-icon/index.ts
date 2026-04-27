@@ -140,4 +140,5 @@ export const companyIcons = {
   엔카닷컴AI: `encar.png`,
   바비톡: `babitalk.ico`,
   하이퍼엑셀: `hyperaccel.png`,
+  flex: `flex.png`,
 } as const
