@@ -141,4 +141,5 @@ export const companyIcons = {
   바비톡: `babitalk.ico`,
   하이퍼엑셀: `hyperaccel.png`,
   flex: `flex.png`,
+  미리디: `miridih.png`,
 } as const
