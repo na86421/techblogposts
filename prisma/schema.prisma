@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id          String     @id @db.VarChar(600) // 글 URL
+  title       String     @db.VarChar(600)
+  company     String     @db.VarChar(300)
+  publishDate BigInt // epoch ms (기존 값 보존)
+  viewCount   Int        @default(0)
+  isShow      Boolean    @default(true)
+  bookmarks   Bookmark[]
+
+  @@index([isShow, publishDate, id]) // 목록 키셋 페이지네이션
+  @@map("posts")
+}
+
+model Blog {
+  id              String  @id @db.VarChar(600) // 블로그 홈 URL
+  title           String  @db.VarChar(300)
+  rssURL          String  @db.VarChar(600)
+  cron            Boolean @default(true)
+  lastUpdated     BigInt  @default(0)
+  lastUpdatedDate String  @db.VarChar(50)
+
+  @@map("blogs") // 행 ~30개, 별도 인덱스 불필요
+}
+
+model Bookmark {
+  id          Int    @id @default(autoincrement())
+  uid         String @db.VarChar(150) // Firebase UID (실제 28자, 최대 128자). uid+parent 복합 unique가 3072바이트 한계라 150
+  parent      String @db.VarChar(600) // posts.id (FK)
+  publishDate BigInt
+  post        Post   @relation(fields: [parent], references: [id], onDelete: Cascade)
+
+  @@unique([uid, parent]) // uid 단독 조회도 이 복합 unique의 prefix로 커버됨
+  @@map("bookmarks")
+}

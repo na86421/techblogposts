@@ -1,19 +1,16 @@
+import { Post } from '@/app/api/v1/posts/postsTypes'
+
 export interface GetBookmarksRequest {
   uid: string
 }
 
+export interface Bookmark {
+  parent: string
+  publishDate: number
+}
+
 export interface GetBookmarksResponse {
-  bookmarks: {
-    _index: string
-    _type: string
-    _id: string
-    _score: number | null
-    _routing: string
-    _source: {
-      parent: string
-      publishDate: number
-    }
-  }[]
+  bookmarks: Bookmark[]
 }
 
 export interface GetBookmarksPostsRequest {
@@ -21,20 +18,5 @@ export interface GetBookmarksPostsRequest {
 }
 
 export interface GetBookmarksPostsResponse {
-  posts: {
-    _index: string
-    _type: string
-    _id: string
-    _score: number | null
-    _source: {
-      company: string
-      dataType: string
-      id: string
-      isShow: boolean
-      join: string
-      publishDate: number
-      title: string
-      viewCount: number
-    }
-  }[]
+  posts: Post[]
 }

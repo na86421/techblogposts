@@ -1,75 +1,30 @@
-import { client } from '@/libs/elasticSearch/elasticSearch'
-import { SearchResponse } from '@elastic/elasticsearch/api/types.js'
-
-interface RssQuery {
-  dataType: string
-  isShow: boolean
-  publishDate: string
-  company: string
-  title: string
-  id: string
-}
+import { prisma } from '@/libs/prisma/prisma'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  const query = {
-    size: 10,
-    body: {
-      query: {
-        bool: {
-          filter: [
-            {
-              term: {
-                dataType: 'post',
-              },
-            },
-            {
-              term: {
-                isShow: true,
-              },
-            },
-          ],
-        },
-      },
-      sort: [
-        {
-          publishDate: {
-            order: 'desc',
-          },
-        },
-        {
-          'id.keyword': {
-            order: 'asc',
-          },
-        },
-      ],
-    },
-  }
+  const posts = await prisma.post.findMany({
+    where: { isShow: true },
+    orderBy: [{ publishDate: 'desc' }, { id: 'asc' }],
+    take: 10,
+  })
 
-  const response = await client.search<SearchResponse<RssQuery>>(query)
+  const title = 'TechBlogPosts'
+  const siteUrl = 'https://techblogposts.com/'
+  const lastModified = new Date(
+    posts[0] ? Number(posts[0].publishDate) : Date.now(),
+  ).toISOString()
+  const xml = `<?xml version="1.0" encoding="utf-8"?>`
 
-  if (response.statusCode === 200) {
-    const posts = response.body.hits.hits
-    const title = 'TechBlogPosts'
-    const siteUrl = 'https://techblogposts.com/'
-    const lastModified = new Date(
-      posts[0]._source?.publishDate || new Date(),
-    ).toISOString()
-    const xml = `<?xml version="1.0" encoding="utf-8"?>`
-
-    const head = `
+  const head = `
       <title>${title}</title>
       <link href="${siteUrl}" />
       <updated>${lastModified}</updated>
       <id>${siteUrl}</id>`
 
-    const entries = posts
-      .map(({ _source }) => {
-        if (_source) {
-          const { title, id, publishDate, company } = _source
-
-          return `
+  const entries = posts
+    .map(({ title, id, publishDate, company }) => {
+      return `
         <entry>
           <title>${title.trim()}</title>
           <link href="${id.trim()}"/>
@@ -77,24 +32,22 @@ export async function GET() {
           <author>
             <name>${company}</name>
           </author>
-          <published>${new Date(publishDate).toISOString()}</published>
+          <published>${new Date(Number(publishDate)).toISOString()}</published>
         </entry>`
-        }
-      })
-      .join('')
-      .replace(/&/g, '&amp;')
-      .replace(/-/g, '&#45;')
+    })
+    .join('')
+    .replace(/&/g, '&amp;')
+    .replace(/-/g, '&#45;')
 
-    const atom = `${xml}
+  const atom = `${xml}
       <feed xmlns="http://www.w3.org/2005/Atom">
         ${head}${entries}
       </feed>`
 
-    return new Response(atom, {
-      headers: {
-        'Content-Type': 'application/atom+xml;charset=UTF-8',
-        'Last-Modified': lastModified,
-      },
-    })
-  }
+  return new Response(atom, {
+    headers: {
+      'Content-Type': 'application/atom+xml;charset=UTF-8',
+      'Last-Modified': lastModified,
+    },
+  })
 }

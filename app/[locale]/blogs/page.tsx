@@ -35,8 +35,8 @@ export default function BlogsPage() {
           </h1>
           {!!data.blogs.length && (
             <ul className={styles.list}>
-              {data.blogs.map(({ _source }) => {
-                const { id, title } = _source
+              {data.blogs.map((blog) => {
+                const { id, title } = blog
 
                 return (
                   <li key={id} className={styles.item}>

@@ -113,10 +113,11 @@ type PostTimeProps = HTMLAttributes<HTMLTimeElement> & {
 
 export function Time({ time, ...props }: PostTimeProps) {
   const { locale } = useParams<{ locale: string }>()
+  const date = new Date(time)
 
   return (
-    <time dateTime={formatISO(time)} {...props}>
-      {formatDistanceToNowStrict(time, {
+    <time dateTime={formatISO(date)} {...props}>
+      {formatDistanceToNowStrict(date, {
         addSuffix: true,
         locale: getDateFnsLocale({ locale }),
       })}

@@ -50,15 +50,11 @@ export default function BookmarksPage() {
         {isPending && <PostsLoading />}
         {!!postsData?.posts.length && (
           <Post.List>
-            {postsData?.posts.map(({ _source }, index) => {
-              const { company, id, publishDate, title, viewCount } = _source
+            {postsData?.posts.map((post, index) => {
+              const { company, id, publishDate, title, viewCount } = post
               const isLastItem = index + 1 === postsData?.posts.length
               const isBookmarked = bookmarksData?.bookmarks.some(
-                ({ _source }) => {
-                  const { parent } = _source
-
-                  return parent === id
-                },
+                (bookmark) => bookmark.parent === id,
               )
 
               return (

@@ -47,19 +47,15 @@ export default function Posts() {
       {!!postsData?.pages.length && (
         <Post.List>
           {postsData?.pages.map(({ posts }, pageIndex) =>
-            posts.map(({ _source }, postIndex) => {
-              const { company, id, publishDate, title, viewCount } = _source
+            posts.map((post, postIndex) => {
+              const { company, id, publishDate, title, viewCount } = post
               const isLastItem =
                 pageIndex + 1 === postsData?.pages.length &&
                 postIndex + 1 === posts.length
 
               // 북마크 관련 로직 주석 처리
               // const isBookmarked = bookmarksData?.bookmarks.some(
-              //   ({ _source }) => {
-              //     const { parent } = _source
-
-              //     return parent === id
-              //   },
+              //   (bookmark) => bookmark.parent === id,
               // )
 
               return (

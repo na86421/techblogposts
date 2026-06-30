@@ -26,7 +26,15 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
+
+# DynamoDB 이관용 임시 데이터
+dynamo-export/
+mock.json
+
+# 람다는 별도(AWS 콘솔)에서 관리 — git 추적 안 함
+lambda/
 
 # vercel
 .vercel

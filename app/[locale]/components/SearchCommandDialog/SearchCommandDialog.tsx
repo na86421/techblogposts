@@ -96,17 +96,12 @@ export function SearchCommandDialog() {
               {isLoading && <Command.Loading />}
               {!!results?.posts.length && (
                 <Command.Group heading={t('SearchCommandDialog.results')}>
-                  {results?.posts.map(({ _source }) => {
-                    const { company, id, publishDate, title, viewCount } =
-                      _source
+                  {results?.posts.map((post) => {
+                    const { company, id, publishDate, title, viewCount } = post
 
                     /* 북마크 관련 로직 주석 처리 */
                     /* const isBookmarked = bookmarksData?.bookmarks.some(
-                      ({ _source }) => {
-                        const { parent } = _source
-
-                        return parent === id
-                      },
+                      (bookmark) => bookmark.parent === id,
                     ) */
 
                     return (
@@ -147,17 +142,13 @@ export function SearchCommandDialog() {
               {(!query || !results?.posts.length) &&
                 !!recentPosts?.posts.length && (
                   <Command.Group heading={t('SearchCommandDialog.recentPosts')}>
-                    {recentPosts?.posts.map(({ _source }) => {
+                    {recentPosts?.posts.map((post) => {
                       const { company, id, publishDate, title, viewCount } =
-                        _source
+                        post
 
                       /* 북마크 관련 로직 주석 처리 */
                       /* const isBookmarked = bookmarksData?.bookmarks.some(
-                          ({ _source }) => {
-                            const { parent } = _source
-
-                            return parent === id
-                          },
+                          (bookmark) => bookmark.parent === id,
                         ) */
 
                       return (

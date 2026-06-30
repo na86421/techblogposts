@@ -14,13 +14,13 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare": "sucrase-node prepare.ts",
+    "postinstall": "prisma generate",
     "assets": "sucrase-node scripts/makeAssets.ts",
     "routes": "sucrase-node scripts/makeRoutes.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.477.0",
-    "@elastic/elasticsearch": "7.13.0",
     "@next/third-parties": "^14.1.0",
+    "@prisma/client": "^6.19.3",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-separator": "^1.0.3",
     "@tanstack/react-query": "^5.12.2",
@@ -68,6 +68,7 @@
     "lint-staged": "^15.1.0",
     "mini-css-extract-plugin": "^2.7.6",
     "prettier": "^3.1.0",
+    "prisma": "^6.19.3",
     "storybook": "^7.6.7",
     "style-loader": "^3.3.3",
     "sucrase": "^3.34.0",

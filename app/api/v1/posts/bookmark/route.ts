@@ -1,61 +1,25 @@
-import { sleep } from '@/app/api/utils'
-import { ES_DELAY_TIME } from '@/constants/common'
-import { client } from '@/libs/dynamoDb/dynamoDb'
-import {
-  DeleteItemCommand,
-  DeleteItemInput,
-  PutItemCommand,
-  PutItemInput,
-} from '@aws-sdk/client-dynamodb'
+import { prisma } from '@/libs/prisma/prisma'
 
 export const dynamic = 'force-dynamic'
 
 export async function PUT(request: Request) {
   const { uid, parent } = await request.json()
-  const id = `${uid}-${parent}`
 
-  const params: PutItemInput = {
-    TableName: process.env.DB_TABLE_NAME,
-    Item: {
-      id: {
-        S: id,
-      },
-      dataType: {
-        S: 'bookmark',
-      },
-      uid: {
-        S: uid,
-      },
-      parent: {
-        S: parent,
-      },
-      publishDate: {
-        N: new Date().getTime().toString(),
-      },
-    },
-  }
-
-  await client.send(new PutItemCommand(params))
-  await sleep(ES_DELAY_TIME)
+  await prisma.bookmark.upsert({
+    where: { uid_parent: { uid, parent } },
+    create: { uid, parent, publishDate: BigInt(Date.now()) },
+    update: {},
+  })
 
   return new Response(null, { status: 204 })
 }
 
 export async function DELETE(request: Request) {
   const { uid, parent } = await request.json()
-  const id = `${uid}-${parent}`
 
-  const params: DeleteItemInput = {
-    TableName: process.env.DB_TABLE_NAME,
-    Key: {
-      id: {
-        S: id + '',
-      },
-    },
-  }
-
-  await client.send(new DeleteItemCommand(params))
-  await sleep(ES_DELAY_TIME)
+  await prisma.bookmark.deleteMany({
+    where: { uid, parent },
+  })
 
   return new Response(null, { status: 204 })
 }

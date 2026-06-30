@@ -1,45 +1,20 @@
-import { client } from '@/libs/elasticSearch/elasticSearch'
-import { SearchResponse } from '@elastic/elasticsearch/api/types.js'
+import { prisma } from '@/libs/prisma/prisma'
 import { NextResponse } from 'next/server'
-
-interface BookmarksQuery {
-  parent: string
-  publishDate: number
-}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  const uid = searchParams.get('uid')
+  const uid = searchParams.get('uid') ?? ''
 
-  const searchQuery = {
-    size: 100,
-    _source_includes: ['parent', 'publishDate'],
-    body: {
-      query: {
-        bool: {
-          filter: [
-            {
-              term: {
-                dataType: 'bookmark',
-              },
-            },
-            {
-              term: {
-                'uid.keyword': uid,
-              },
-            },
-          ],
-        },
-      },
-    },
-  }
+  const rows = await prisma.bookmark.findMany({
+    where: { uid },
+    select: { parent: true, publishDate: true },
+    take: 100,
+  })
 
-  const response =
-    await client.search<SearchResponse<BookmarksQuery>>(searchQuery)
+  const bookmarks = rows.map((row) => ({
+    parent: row.parent,
+    publishDate: Number(row.publishDate),
+  }))
 
-  if (response.statusCode === 200) {
-    const bookmarks = response.body.hits.hits
-
-    return NextResponse.json({ bookmarks })
-  }
+  return NextResponse.json({ bookmarks })
 }
